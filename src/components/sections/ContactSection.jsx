@@ -124,7 +124,7 @@ export function ContactSection() {
                   style={{ borderColor: "hsl(var(--border))", outlineColor: "hsl(var(--accent))" }}
                   placeholder="Tell me about your project..."
                 />
-                {showErrors && errors.message ? <div className="mt-2 text-xs text-red-500">{errors.message}</div> : null}
+                {errors.message ? <div className="mt-2 text-xs text-red-500">{errors.message}</div> : null}
               </div>
               <button type="submit" className="btn btn-primary mt-2">
                 Send Message
