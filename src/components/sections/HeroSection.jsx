@@ -1,38 +1,51 @@
-import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion, useMotionValue, useSpring, useTransform, useTime } from "framer-motion";
+import { ArrowDown, ArrowUpRight, Code, Cpu, Layout } from "lucide-react";
 import { portfolio } from "@/data/portfolio";
 import { MotionReveal } from "@/components/motion/MotionReveal";
+import { ScratchReveal } from "@/components/site/ScratchReveal";
 
 export function HeroSection({ onPrimaryCta, onSecondaryCta }) {
   const reduce = useReducedMotion();
+  const time = useTime();
 
-  // 3D Tilt Effect
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  // 3D Tilt Effect based on mouse
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
+  const mouseXSpring = useSpring(mouseX);
+  const mouseYSpring = useSpring(mouseY);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
+  // Subtle continuous camera drift (smooth loop)
+  const driftX = useTransform(time, (t) => Math.sin(t / 2000) * 0.05);
+  const driftY = useTransform(time, (t) => Math.cos(t / 1500) * 0.05);
+
+  // Combine mouse and drift for the final rotation
+  const rotateX = useTransform(
+    [mouseYSpring, driftY],
+    ([mY, dY]) => (mY + dY) * -35 + "deg"
+  );
+  const rotateY = useTransform(
+    [mouseXSpring, driftX],
+    ([mX, dX]) => (mX + dX) * 35 + "deg"
+  );
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
+    const xPct = x / width - 0.5;
+    const yPct = y / height - 0.5;
 
-    x.set(xPct);
-    y.set(yPct);
+    mouseX.set(xPct);
+    mouseY.set(yPct);
   };
 
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    mouseX.set(0);
+    mouseY.set(0);
   };
 
   return (
@@ -47,12 +60,41 @@ export function HeroSection({ onPrimaryCta, onSecondaryCta }) {
                   <span>{portfolio.location}</span>
                 </div>
 
-                <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
-                  {portfolio.name}
-                </h1>
-                <p className="mt-3 text-lg text-[hsl(var(--text-muted))] sm:text-xl">{portfolio.title}</p>
+                <motion.h1 
+                  className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                  {portfolio.name.split(" ").map((word, i) => (
+                    <motion.span
+                      key={i}
+                      className="inline-block mr-3"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </motion.h1>
+                <motion.p 
+                  className="mt-3 text-lg text-[hsl(var(--text-muted))] sm:text-xl"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  {portfolio.title}
+                </motion.p>
 
-                <p className="mt-6 max-w-xl text-[hsl(var(--text-muted))]">{portfolio.intro}</p>
+                <motion.p 
+                  className="mt-6 max-w-xl text-[hsl(var(--text-muted))]"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  {portfolio.intro}
+                </motion.p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <button type="button" className="btn btn-primary" onClick={onPrimaryCta}>
@@ -82,60 +124,42 @@ export function HeroSection({ onPrimaryCta, onSecondaryCta }) {
             </MotionReveal>
 
             <motion.div
-              className="relative"
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0.98 }}
-              animate={
-                reduce
-                  ? { opacity: 1 }
-                  : {
-                      opacity: 1,
-                      scale: 1,
-                      y: [0, -15, 0], // Floating effect
-                    }
-              }
-              transition={
-                reduce
-                  ? { duration: 0.6 }
-                  : {
-                      opacity: { duration: 0.6 },
-                      scale: { duration: 0.6 },
-                      y: {
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      },
-                    }
-              }
-              style={{
-                perspective: "1000px",
-              }}
+              className="relative flex items-center justify-center py-10"
+              initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
             >
+              {/* Background Glow Layers */}
               <motion.div
-                className="absolute -inset-4 rounded-[32px] bg-gradient-to-br from-cyan-500/20 via-transparent to-indigo-500/20 blur-2xl"
-                animate={reduce ? {} : { opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div 
-                className="surface relative overflow-hidden p-3"
-                style={{
-                  rotateX,
-                  rotateY,
-                  transformStyle: "preserve-3d",
+                className="absolute -inset-10 rounded-full bg-[hsl(var(--accent))]/20 blur-[80px]"
+                animate={reduce ? {} : { 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.6, 0.3]
                 }}
-              >
-                <img
-                  src={portfolio.profileImageSrc}
-                  alt="Profile"
-                  className="aspect-square w-full rounded-2xl object-cover shadow-2xl"
-                  style={{ 
-                    imageRendering: "auto",
-                    transform: "translateZ(50px)", // Pop out the image a bit
-                  }}
-                  loading="lazy"
-                />
-              </motion.div>
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute -inset-10 rounded-full bg-cyan-500/10 blur-[60px]"
+                animate={reduce ? {} : { 
+                  scale: [1.2, 1, 1.2],
+                  opacity: [0.2, 0.4, 0.2]
+                }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              />
+
+              {/* Main Container (Static now for better scratching) */}
+              <div className="relative z-10 w-full max-w-sm">
+                {/* Main Image Layer */}
+                <div className="surface relative overflow-hidden rounded-[32px] p-2 shadow-2xl">
+                  <div className="overflow-hidden rounded-[24px]">
+                    <ScratchReveal
+                      src={portfolio.profileImageSrc}
+                      alt="Profile"
+                      className="aspect-[4/5] w-full"
+                    />
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

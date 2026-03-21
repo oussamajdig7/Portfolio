@@ -20,22 +20,36 @@ function TechBadge({ label }) {
 function ProjectCard({ project, onHoverImage }) {
   return (
     <motion.article
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-      className="surface group overflow-hidden flex flex-col h-full"
+      whileHover={{ 
+        y: -10,
+        transition: { type: "spring", stiffness: 400, damping: 10 }
+      }}
+      className="surface group overflow-hidden flex flex-col h-full transition-shadow hover:shadow-2xl hover:shadow-[hsl(var(--accent))]/10"
+      style={{
+        perspective: "1000px"
+      }}
     >
       <div 
         className="relative overflow-hidden cursor-zoom-in"
         onMouseEnter={() => onHoverImage(project.imageSrc)}
         onMouseLeave={() => onHoverImage(null)}
       >
-        <img
-          src={project.imageSrc}
-          alt={`${project.title} cover`}
-          className="h-44 w-full object-cover sm:h-52 transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-black/5 opacity-0 transition-opacity group-hover:opacity-100" />
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+        >
+          <img
+            src={project.imageSrc}
+            alt={`${project.title} cover`}
+            className="h-44 w-full object-cover sm:h-52"
+            loading="lazy"
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-end p-4">
+          <span className="text-white text-xs font-medium backdrop-blur-sm bg-white/10 px-2 py-1 rounded-lg">
+            Quick Preview
+          </span>
+        </div>
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
