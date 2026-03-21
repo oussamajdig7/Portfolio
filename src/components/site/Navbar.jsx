@@ -1,23 +1,17 @@
 import { useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 
 export function Navbar({
   brand,
   items,
-  activeId,
   isDark,
   onToggleTheme,
-  onNavigate,
 }) {
   const [open, setOpen] = useState(false);
   const ordered = useMemo(() => items, [items]);
-
-  const handleNav = (id) => {
-    onNavigate(id);
-    setOpen(false);
-  };
 
   return (
     <header className="sticky top-0 z-50">
@@ -26,29 +20,30 @@ export function Navbar({
           className="mt-4 flex items-center justify-between gap-3 rounded-2xl border bg-white/70 px-3 py-3 shadow-sm backdrop-blur dark:bg-white/5"
           style={{ borderColor: "hsl(var(--border))" }}
         >
-          <button
-            type="button"
+          <Link
+            to="/"
             className="rounded-xl px-3 py-2 text-sm font-semibold tracking-tight hover:bg-black/5 dark:hover:bg-white/10"
-            onClick={() => handleNav(ordered[0]?.id ?? "hero")}
+            onClick={() => setOpen(false)}
           >
             {brand}
-          </button>
+          </Link>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Section navigation">
             {ordered.map((it) => (
-              <button
+              <NavLink
                 key={it.id}
-                type="button"
-                onClick={() => handleNav(it.id)}
-                className={cn(
-                  "rounded-xl px-3 py-2 text-sm transition",
-                  it.id === activeId
-                    ? "bg-black/5 font-medium dark:bg-white/10"
-                    : "text-[hsl(var(--text-muted))] hover:bg-black/5 hover:text-[hsl(var(--text))] dark:hover:bg-white/10",
-                )}
+                to={it.id}
+                className={({ isActive }) =>
+                  cn(
+                    "rounded-xl px-3 py-2 text-sm transition",
+                    isActive
+                      ? "bg-black/5 font-medium dark:bg-white/10"
+                      : "text-[hsl(var(--text-muted))] hover:bg-black/5 hover:text-[hsl(var(--text))] dark:hover:bg-white/10",
+                  )
+                }
               >
                 {it.label}
-              </button>
+              </NavLink>
             ))}
           </nav>
 
@@ -77,19 +72,21 @@ export function Navbar({
             style={{ borderColor: "hsl(var(--border))" }}
           >
             {ordered.map((it) => (
-              <button
+              <NavLink
                 key={it.id}
-                type="button"
-                onClick={() => handleNav(it.id)}
-                className={cn(
-                  "flex w-full items-center justify-between rounded-xl px-3 py-3 text-left text-sm transition",
-                  it.id === activeId
-                    ? "bg-black/5 font-medium dark:bg-white/10"
-                    : "text-[hsl(var(--text-muted))] hover:bg-black/5 hover:text-[hsl(var(--text))] dark:hover:bg-white/10",
-                )}
+                to={it.id}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  cn(
+                    "flex w-full items-center justify-between rounded-xl px-3 py-3 text-left text-sm transition",
+                    isActive
+                      ? "bg-black/5 font-medium dark:bg-white/10"
+                      : "text-[hsl(var(--text-muted))] hover:bg-black/5 hover:text-[hsl(var(--text))] dark:hover:bg-white/10",
+                  )
+                }
               >
                 {it.label}
-              </button>
+              </NavLink>
             ))}
           </div>
         </div>
