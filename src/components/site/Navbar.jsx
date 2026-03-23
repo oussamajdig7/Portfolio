@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Volume2, VolumeX } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
@@ -9,6 +9,8 @@ export function Navbar({
   items,
   isDark,
   onToggleTheme,
+  isMuted,
+  onToggleMute,
 }) {
   const [open, setOpen] = useState(false);
   const ordered = useMemo(() => items, [items]);
@@ -48,6 +50,15 @@ export function Navbar({
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border transition hover:bg-black/5 dark:hover:bg-white/10"
+              style={{ borderColor: "hsl(var(--border))" }}
+              aria-label={isMuted ? "Unmute" : "Mute"}
+              onClick={onToggleMute}
+            >
+              {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+            </button>
             <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
             <button
               type="button"

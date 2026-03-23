@@ -6,7 +6,9 @@ import { Footer } from "@/components/site/Footer";
 import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { CustomCursor } from "@/components/site/CustomCursor";
+import { SoundManager } from "@/components/site/SoundManager";
 import { useTheme } from "@/hooks/useTheme";
+import { useAudioStore } from "@/hooks/useAudio";
 import { portfolio } from "@/data/portfolio";
 
 function AnimatedBackground() {
@@ -54,6 +56,7 @@ function AnimatedBackground() {
 
 export function Layout() {
   const { isDark, toggleTheme } = useTheme();
+  const { isMuted, toggleMute } = useAudioStore();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
@@ -77,8 +80,9 @@ export function Layout() {
   if (loading) return <LoadingScreen label="Warming up the UI…" />;
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen overflow-x-hidden w-full">
       <CustomCursor />
+      <SoundManager />
       <AnimatedBackground />
       
       <Navbar
@@ -86,6 +90,8 @@ export function Layout() {
         items={items}
         isDark={isDark}
         onToggleTheme={toggleTheme}
+        isMuted={isMuted}
+        onToggleMute={toggleMute}
       />
 
       <main className="relative z-10">
