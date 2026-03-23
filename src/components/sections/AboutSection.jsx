@@ -54,8 +54,7 @@ export function AboutSection() {
                 <a
                   className="font-medium"
                   href={`mailto:${portfolio.email}`}
-                  style={{ color: "hsl(var(--accent))" }}
-                >
+                  style={{ color: "hsl(var(--accent))" }}>
                   {portfolio.email}
                 </a>
               </div>
