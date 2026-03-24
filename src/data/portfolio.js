@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Instagram } from "lucide-react";
+import { Github, Mail, Instagram } from "lucide-react";
 import profileImage from "@/assets/profile.jpeg";
 import chambreImage from "@/assets/chambreArtisana.png";
 import universitaireImage from "@/assets/universitaire.png";
@@ -9,9 +9,9 @@ export const portfolio = {
   intro:
     "I build fast, accessible web experiences with React, JavaScript, and a strong focus on UI polish.",
   location: "Agadir, Morocco",
-  email: "oussamajdig7@gmail.com",
+  email: "jdigoussama7@gmail.com",
   socials: [
-    { label: "Email", href: "mailto:oussamajdig7@gmail.com", Icon: Mail },
+    { label: "Email", href: "mailto:jdigoussama7@gmail.com", Icon: Mail },
     { label: "GitHub", href: "https://github.com/oussamajdig7", Icon: Github },
     { label: "Instagram", href: "https://www.instagram.com/4_5fp?igsh=MTd6d3pqcGs0ZDFmNw==", Icon: Instagram },
   ],

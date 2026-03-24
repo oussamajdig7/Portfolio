@@ -55,7 +55,7 @@ function AnimatedBackground() {
 }
 
 export function Layout() {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark, toggleTheme, nextColor } = useTheme();
   const { isMuted, toggleMute } = useAudioStore();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
@@ -90,6 +90,7 @@ export function Layout() {
         items={items}
         isDark={isDark}
         onToggleTheme={toggleTheme}
+        nextColor={nextColor}
         isMuted={isMuted}
         onToggleMute={toggleMute}
       />

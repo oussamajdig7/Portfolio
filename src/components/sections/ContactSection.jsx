@@ -1,41 +1,67 @@
 import { useMemo, useState } from "react";
+import emailjs from "@emailjs/browser";
 import { MotionReveal } from "@/components/motion/MotionReveal";
 import { SectionShell } from "@/components/site/SectionShell";
 import { portfolio } from "@/data/portfolio";
-import { buildMailtoLink } from "@/utils/mailto";
 
 function isEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
 export function ContactSection() {
-  const [state, setState] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [state, setState] = useState({ title: "", name: "", email: "", message: "" });
+  const [isSending, setIsSending] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ type: "idle", message: "" });
   const [showErrors, setShowErrors] = useState(false);
 
   const errors = useMemo(() => {
     const e = {};
+    if (!state.title.trim()) e.title = "Please enter a subject.";
     if (!state.name.trim()) e.name = "Please enter your name.";
     if (!state.email.trim()) e.email = "Please enter your email.";
     else if (!isEmail(state.email)) e.email = "Please enter a valid email.";
     if (state.message.trim().length < 10) e.message = "Please write at least 10 characters.";
     return e;
-  }, [state.email, state.message, state.name]);
+  }, [state.email, state.message, state.name, state.title]);
 
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
     setShowErrors(true);
     
     if (Object.keys(errors).length > 0) return;
 
-    const mailto = buildMailtoLink({
-      to: portfolio.email,
-      subject: `Portfolio inquiry from ${state.name}`,
-      body: `Name: ${state.name}\nEmail: ${state.email}\n\n${state.message}`,
-    });
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID ?? "service_fxhnj2f";
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? "template_icw98yp";
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? "20i-DdLGLcY1Hdhe0";
 
-    setSubmitted(true);
-    window.location.href = mailto;
+    setIsSending(true);
+    setSubmitStatus({ type: "idle", message: "" });
+
+    try {
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          title: state.title,
+          name: state.name,
+          user_name: state.name,
+          user_email: state.email,
+          message: state.message,
+        },
+        { publicKey }
+      );
+
+      setSubmitStatus({ type: "success", message: "Message sent successfully. I’ll get back to you soon." });
+      setState({ title: "", name: "", email: "", message: "" });
+      setShowErrors(false);
+    } catch {
+      setSubmitStatus({
+        type: "error",
+        message: "Message not sent. Please try again or email me directly.",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -45,8 +71,7 @@ export function ContactSection() {
           <div className="surface p-6 sm:p-8">
             <div className="text-sm font-semibold">Let’s build something</div>
             <p className="mt-3 text-sm text-[hsl(var(--text-muted))]">
-              The form opens your email client with a pre-filled message. You can also reach me via
-              social links.
+              Send me a message directly from this form, or reach me via social links.
             </p>
 
             <div className="mt-6 space-y-3">
@@ -68,12 +93,23 @@ export function ContactSection() {
               ))}
             </div>
 
-            {submitted ? (
+            {submitStatus.type === "success" ? (
               <div
                 className="mt-6 rounded-2xl border bg-white/60 px-4 py-3 text-sm text-[hsl(var(--text-muted))] dark:bg-white/5"
                 style={{ borderColor: "hsl(var(--border))" }}
               >
-                Email client opened. If it didn’t, copy and email me at {portfolio.email}.
+                {submitStatus.message}
+              </div>
+            ) : submitStatus.type === "error" ? (
+              <div
+                className="mt-6 rounded-2xl border bg-white/60 px-4 py-3 text-sm text-[hsl(var(--text-muted))] dark:bg-white/5"
+                style={{ borderColor: "hsl(var(--border))" }}
+              >
+                {submitStatus.message} Email:{" "}
+                <a className="font-medium" href={`mailto:${portfolio.email}`} style={{ color: "hsl(var(--accent))" }}>
+                  {portfolio.email}
+                </a>
+                .
               </div>
             ) : null}
           </div>
@@ -82,6 +118,20 @@ export function ContactSection() {
         <MotionReveal delay={0.05}>
           <form className="surface p-6 sm:p-8" onSubmit={onSubmit}>
             <div className="grid gap-4">
+              <div>
+                <label className="text-sm font-medium" htmlFor="title">
+                  Subject
+                </label>
+                <input
+                  id="title"
+                  value={state.title}
+                  onChange={(e) => setState((s) => ({ ...s, title: e.target.value }))}
+                  className="mt-2 w-full rounded-xl border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2"
+                  style={{ borderColor: "hsl(var(--border))", outlineColor: "hsl(var(--accent))" }}
+                  placeholder="Hiring / Project / Question..."
+                />
+                {showErrors && errors.title ? <div className="mt-2 text-xs text-red-500">{errors.title}</div> : null}
+              </div>
               <div>
                 <label className="text-sm font-medium" htmlFor="name">
                   Name
@@ -124,10 +174,10 @@ export function ContactSection() {
                   style={{ borderColor: "hsl(var(--border))", outlineColor: "hsl(var(--accent))" }}
                   placeholder="Tell me about your project..."
                 />
-                {errors.message ? <div className="mt-2 text-xs text-red-500">{errors.message}</div> : null}
+                {showErrors && errors.message ? <div className="mt-2 text-xs text-red-500">{errors.message}</div> : null}
               </div>
-              <button type="submit" className="btn btn-primary mt-2">
-                Send Message
+              <button type="submit" className="btn btn-primary mt-2" disabled={isSending}>
+                {isSending ? "Sending..." : "Send Message"}
               </button>
             </div>
           </form>

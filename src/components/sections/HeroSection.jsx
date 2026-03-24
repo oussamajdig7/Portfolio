@@ -98,7 +98,7 @@ export function HeroSection({ onPrimaryCta, onSecondaryCta }) {
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <button type="button" className="btn btn-primary" onClick={onPrimaryCta}>
-                    View Projects <ArrowDown className="h-4 w-4" />
+                    View Projects <ArrowUpRight className="h-4 w-4" />
                   </button>
                   <button type="button" className="btn btn-secondary" onClick={onSecondaryCta}>
                     Contact <ArrowUpRight className="h-4 w-4" />

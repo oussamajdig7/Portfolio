@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Menu, X, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Volume2, VolumeX, Palette } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
@@ -9,6 +9,7 @@ export function Navbar({
   items,
   isDark,
   onToggleTheme,
+  nextColor,
   isMuted,
   onToggleMute,
 }) {
@@ -50,6 +51,19 @@ export function Navbar({
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border transition hover:bg-black/5 dark:hover:bg-white/10"
+              style={{ 
+                borderColor: "hsl(var(--border))",
+                background: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff)",
+                backgroundSize: "200% 200%",
+              }}
+              aria-label="Change theme color"
+              onClick={nextColor}
+            >
+              <Palette className="h-5 w-5 text-white mix-blend-difference" />
+            </button>
             <button
               type="button"
               className="inline-flex h-10 w-10 items-center justify-center rounded-xl border transition hover:bg-black/5 dark:hover:bg-white/10"

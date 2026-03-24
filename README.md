@@ -1,29 +1,37 @@
-# Personal Portfolio (React + Vite)
+# Portfolio personnel (React + Vite)
 
-Modern, responsive portfolio built with React, TypeScript, Tailwind CSS, and Framer Motion.
+Portfolio moderne et responsive construit avec React, Vite, Tailwind CSS et Framer Motion.
 
-## Features
-- Sections: Hero, About, Skills, Projects, Timeline, Contact
-- Sticky nav with smooth scroll + active section highlight
-- Dark mode toggle (persisted)
-- Framer Motion animations + hover interactions
-- Loading screen and scroll-to-top button
+## Fonctionnalités
+- Sections : Hero, About, Skills, Projects, Timeline, Contact
+- Barre de navigation fixe avec défilement fluide et section active
+- Mode sombre (persistant)
+- Animations avec Framer Motion et interactions au survol
+- Écran de chargement et bouton de retour en haut
 
-## Getting started
+## Prérequis
+- Node.js et npm
 
-Install dependencies:
+## Installation et utilisation
+
+Installer les dépendances :
 ```bash
 npm install
 ```
 
-Run the dev server:
+Lancer le serveur de développement :
 ```bash
 npm run dev
 ```
 
-Typecheck:
+Générer le build de production :
 ```bash
-npm run check
+npm run build
+```
+
+Prévisualiser le build :
+```bash
+npm run preview
 ```
 
 Lint:
@@ -31,10 +39,10 @@ Lint:
 npm run lint
 ```
 
-Build:
-```bash
-npm run build
-```
+## Personnalisation
+- Modifie les données du portfolio dans `src/data/portfolio.js` (nom, liens, projets, compétences, timeline, etc.).
+- Consulte les composants des sections dans `src/components/sections/`.
 
-## Customize
-- Update content in `src/data/portfolio.ts` (name, links, projects, skills, timeline).
+## Deploy
+- Vite génère les fichiers dans `dist/`.
+- Si tu utilises Netlify, la redirection SPA est dans `public/netlify.toml`.
