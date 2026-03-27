@@ -1,48 +1,53 @@
-# Portfolio personnel (React + Vite)
+# Portfolio Personnel — React + Vite
 
-Portfolio moderne et responsive construit avec React, Vite, Tailwind CSS et Framer Motion.
+Portfolio moderne, performant et responsive, construit avec React, Vite, Tailwind CSS et Framer Motion.
 
-## Fonctionnalités
-- Sections : Hero, About, Skills, Projects, Timeline, Contact
-- Barre de navigation fixe avec défilement fluide et section active
-- Mode sombre (persistant)
-- Animations avec Framer Motion et interactions au survol
-- Écran de chargement et bouton de retour en haut
+## Démo en ligne
+- Live demo : https://oussamajdig.netlify.app/
 
-## Prérequis
-- Node.js et npm
+## Stack
+- React 18 + Vite 6
+- Tailwind CSS 3
+- Framer Motion 11
+- React Router 7
+- Three.js + @react-three/fiber + @react-three/drei
+- Zustand (state), EmailJS (contact), Lucide (icônes)
 
-## Installation et utilisation
+## Fonctionnalités clés
+- Sections: Hero, About, Skills, Projects, Timeline, Contact
+- Navigation sticky avec défilement fluide et section active
+- Mode sombre persistant
+- Animations soignées (entrées, hover, micro-interactions)
+- Écran de chargement, bouton “Back to Top”
 
-Installer les dépendances :
+## Démarrer
+### Prérequis
+- Node.js et npm installés
+
+### Installation
 ```bash
 npm install
 ```
 
-Lancer le serveur de développement :
-```bash
-npm run dev
-```
+### Scripts
+- Dev: `npm run dev`
+- Build: `npm run build`
+- Preview (après build): `npm run preview`
+- Lint: `npm run lint`
 
-Générer le build de production :
-```bash
-npm run build
-```
-
-Prévisualiser le build :
-```bash
-npm run preview
-```
-
-Lint:
-```bash
-npm run lint
-```
+## Structure du projet
+- `src/components/sections/` : sections du site
+- `src/data/` : données du portfolio (nom, liens, projets, compétences, timeline…)
+- `public/` : assets statiques et config Netlify si utilisée
 
 ## Personnalisation
-- Modifie les données du portfolio dans `src/data/portfolio.js` (nom, liens, projets, compétences, timeline, etc.).
-- Consulte les composants des sections dans `src/components/sections/`.
+- Mets à jour les infos et contenus dans `src/data/`.
+- Adapte les sections dans `src/components/sections/` selon tes besoins.
+- Styles via Tailwind classes et utilitaires.
 
-## Deploy
-- Vite génère les fichiers dans `dist/`.
-- Si tu utilises Netlify, la redirection SPA est dans `public/netlify.toml`.
+## Build & Déploiement
+- Le build de production est généré dans `dist/`.
+- Netlify recommandé : SPA redirect via `public/netlify.toml`.
+
+## Licence
+- Usage personnel/portfolio. Ajuste selon ton besoin.
