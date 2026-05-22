@@ -2,6 +2,7 @@ import { Github, Mail, Instagram } from "lucide-react";
 import profileImage from "@/assets/profile.jpeg";
 import chambreImage from "@/assets/chambreArtisana.png";
 import universitaireImage from "@/assets/universitaire.png";
+import syndicImage from "@/assets/gestionSyndic.png";
 
 export const portfolio = {
   name: "Oussama Jdig",
@@ -18,6 +19,22 @@ export const portfolio = {
   profileImageSrc: profileImage,
   bannerImageSrc: "#",
   projects: [
+    {
+      title: "SyndicFlow – Gestion de Syndic Immobilier",
+      description:
+        "Plateforme SaaS moderne pour digitaliser et automatiser la gestion de copropriété. Centralise la gestion des immeubles, résidents, paiements et charges avec un dashboard financier intelligent et des graphiques interactifs.",
+      tech: [
+        "Laravel 13",
+        "React 19",
+        "PostgreSQL",
+        "Tailwind CSS",
+        "Zustand",
+        "Recharts",
+      ],
+      imageSrc: syndicImage,
+      repoUrl: "#",
+      demoUrl: "#",
+    },
     {
       title: "Chambre Artisana - Plateforme Web",
       description:

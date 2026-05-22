@@ -13,8 +13,9 @@ export function SoundManager() {
   // Initialize audio object once
   useEffect(() => {
     const audio = new Audio("/audio/43861138-game-of-thrones-211870.mp3");
+    audio.crossOrigin = "anonymous";
     audio.loop = true;
-    audio.volume = 0.05;
+    audio.volume = 0.15;
     bgMusicRef.current = audio;
 
     // cleanup on unmount
@@ -33,6 +34,7 @@ export function SoundManager() {
   const playSound = (url) => {
     if (isMuted) return;
     const audio = new Audio(url);
+    audio.crossOrigin = "anonymous";
     audio.volume = 0.2;
     audio.play().catch(() => {});
   };
