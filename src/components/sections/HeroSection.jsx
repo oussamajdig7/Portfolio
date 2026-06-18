@@ -2,7 +2,6 @@ import { motion, useReducedMotion, useMotionValue, useSpring, useTransform, useT
 import { ArrowDown, ArrowUpRight, Code, Cpu, Layout } from "lucide-react";
 import { portfolio } from "@/data/portfolio";
 import { MotionReveal } from "@/components/motion/MotionReveal";
-import { ScratchReveal } from "@/components/site/ScratchReveal";
 
 export function HeroSection({ onPrimaryCta, onSecondaryCta }) {
   const reduce = useReducedMotion();
@@ -152,10 +151,10 @@ export function HeroSection({ onPrimaryCta, onSecondaryCta }) {
                 {/* Main Image Layer */}
                 <div className="surface relative overflow-hidden rounded-[32px] p-2 shadow-2xl">
                   <div className="overflow-hidden rounded-[24px]">
-                    <ScratchReveal
+                    <img
                       src={portfolio.profileImageSrc}
                       alt="Profile"
-                      className="aspect-[4/5] w-full"
+                      className="aspect-[4/5] w-full object-cover"
                     />
                   </div>
                 </div>
